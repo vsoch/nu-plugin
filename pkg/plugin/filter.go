@@ -15,16 +15,15 @@ import (
 	configlib "github.com/vsoch/nu-plugin/pkg/config"
 )
 
-// NushellPlugin represents an interface for a Nushell Plugin. It includes 
-// a configuration, along with supporting functions
+// FilterPlugin represents an interface for a Nushell Filter Plugin. 
+// It includes a configuration, along with supporting functions
 type FilterPlugin struct {
 	Config	configlib.Config
 	Func	PluginFunctions
 }
 
+// configure is called upon plugin generation
 // TODO need to add Named and Positional to plugin
-
-// newFilterPlugin returns a filter plugin
 func (plugin *FilterPlugin) configure(name string, usage string) {
 	var config = configlib.Config{
 		Name: name,
@@ -87,9 +86,7 @@ func (plugin *FilterPlugin) printEmptyResponse() error {
 	return nil
 }
 
-// TODO: need a way to determine the inputs expected...
-// Parse both and pass to function for user to implement?
-// This should be run in main for the implemented plugin
+// Run the filter, should be called in main of the implemented plugin
 func (plugin *FilterPlugin) Run(filterFunc func(plugin *FilterPlugin, stringValue interface{})) {
 
 

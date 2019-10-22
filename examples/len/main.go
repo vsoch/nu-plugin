@@ -9,11 +9,11 @@ import nu "github.com/vsoch/nu-plugin/pkg/plugin"
 
 
 // filter is required for you to implement to print the response needed
-// It should take the plugin object passed, along with params from the 
-// calling filterPlugin. It should run plugin.printStringResponse or 
+// It should take the plugin object passed, along with params from 
+// nushell. It should run plugin.printStringResponse or 
 // plugin.printIntResponse, depending on your response. You are responsible
-// for parsing the params, and can use both plugin.Func.getStringPrimivite 
-// and plugin.Func.getIntPrimivite
+// for parsing the params, and can use both plugin.Func.getStringPrimitive 
+// and plugin.Func.getIntPrimitive
 func filter(plugin *nu.FilterPlugin, params interface{}) {
 
 	// can also be getIntPrimitive
