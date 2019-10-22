@@ -5,12 +5,10 @@
 
 package main
  
-import (
-	nu "github.com/vsoch/nu-plugin/pkg/plugin"
-)
+import nu "github.com/vsoch/nu-plugin/pkg/plugin"
 
 
-// runFilter is required for you to implement to print the response needed
+// filter is required for you to implement to print the response needed
 // It should take the plugin object passed, along with params from the 
 // calling filterPlugin. It should run plugin.printStringResponse or 
 // plugin.printIntResponse, depending on your response. You are responsible

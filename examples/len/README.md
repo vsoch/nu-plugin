@@ -207,6 +207,9 @@ $ docker pull vanessa/nu-plugin-len
 $ docker run -it vanessa/nu-plugin-len
 ```
 
+The entrypoint is bash, and we do this because sometimes nushell errors out (some issue
+with Docker). It's easy enough for you to run nu once inside, or change the entrypoint yourself.
+
 Don't forget to check out the logging file at `/tmp/nushell-plugin-len.log` if you 
 need to debug!
 
