@@ -49,39 +49,31 @@ func (caller *PluginFunctions) GetIntPrimitive(stringValue interface{}) int {
 //	     'item': {'Primitive': {'String': 'OPTIONALARG'}}}}},
 //	  'name_tag': {'anchor': None, 'span': {'start': 0, 'end': 7}}},
 //	 []]
-func (caller *PluginFunctions) GetNamedParams(stringValue interface{}) map[string]string {
+func (caller *PluginFunctions) GetNamedParams(stringValue interface{}) map[string]interface{} {
 
-	response := make(map[string]string)
-	fmt.Println(stringValue)
+	// Return generic interface to account for different types
+	response := make(map[string]interface{})
+
+	// We need the first entry in the list, not sure why there is empty
+	jsonValues := stringValue.([]interface {})[0]
+	args := jsonValues.(map[string]interface{})["args"]
+	namedList := args.(map[string]interface{})["named"]
+	named := namedList.(map[string]interface{})
+
+	// Loop through to get individual named arguments
+	for key, v := range named {
+		item := v.(map[string]interface{})["item"]
+		primitive := item.(map[string]interface{})["Primitive"]
+		values := primitive.(map[string]interface{})
+
+		// parse the response based on the type
+		for _, argvalue := range values {
+			//param := argvalue.(string)
+			response[key] = argvalue
+		}
+	}
 	return response
 }
-//    # Just grab the args dictionary
-//    input_params = input_params[0]
-//    positional = input_params['args'].get('positional', [])
-//    named = input_params['args'].get('named', {})
-
-//    # We will return lookup dictionary of params
-//    params = {}
-
-//    # Keep a simple dictionary with values we know types for
-//    for name, values in named.items():
-
-//        # is it a String? Boolean?
-//        value_type = list(values['item']['Primitive'].keys())[0]
-
-//        if value_type == "String":
-//            params[name] = values['item']['Primitive']['String']
-
-//        elif value_type == "Boolean":
-//            params[name] = values['item']['Primitive']['Boolean']
-
-//        # If you use other types, add them here
-
-//        else:
-//            logging.info("Invalid paramater type %s:%s" %(name, values))
-
-//    return params        
-
 
 // printIntResponse will print a json response to the terminal. The 
 // generates a JsonResponse with Params.FinalResponseParams

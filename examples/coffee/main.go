@@ -17,17 +17,26 @@ import (
 // and plugin.Func.getIntPrimitive
 func sink(plugin *nu.SinkPlugin, params interface{}) {
 
-	// can also be getIntPrimitive
-	// still testing here
-	namedParams := plugin.Func.GetNamedParams(params)	
-	fmt.Println(namedParams)
-	
-	// You must also return the tag with your response
-	//tag := plugin.Func.GetTag(params)
+	// a map[string]interface{} with keys, values
+	namedParams := plugin.Func.GetNamedParams(params)
 
-	// This can also be printStringResponse
-	//plugin.Func.PrintIntResponse(intLength, tag)
+	// Default coffee strength is 1
+	strength := "1"
 
+	// You should parse as you expect them. If a Switch not provided,
+	// it simply won't be present
+	for name, value := range namedParams {
+
+		if name == "black" {
+			fmt.Println("We requested black coffee!", value)
+		} else if name == "strength" {
+			strength = value.(string)
+		} else if name == "sugar" {
+			fmt.Println("We requested adding sugar!", value)
+		}
+	}
+
+	fmt.Println("Coffee strength is", strength)
 }
 
 func main() {

@@ -6,6 +6,7 @@
 package plugin
 
 import (
+	"bufio"
 	"encoding/json"
 	"log"
 	"os"
@@ -62,11 +63,53 @@ func (plugin *SinkPlugin) Run(sinkFunc func(plugin *SinkPlugin, stringValue inte
 	}
 	defer f.Close()	
 	logger := log.New(f, plugin.getExecutableName(), log.LstdFlags)
+	logger.Println("\nArguments are", os.Args)
 
-	// Read into json decoded
+	// We will read in entry of the map
+	var line map[string]interface{}
+
+	// If we are running sink, we are giving a filepath
+	if len(os.Args) == 2 {
+
+		file, err := os.Open(os.Args[1])
+		if err != nil {
+			logger.Println("Error reading file", os.Args[1])
+		}
+		defer file.Close()
+		scanner := bufio.NewScanner(file)
+		for scanner.Scan() {
+
+			logger.Println(scanner.Text())
+
+			err := json.Unmarshal([]byte(scanner.Text()), &line)
+			if err != nil {
+				logger.Println("unable to read:", err)
+				break
+			} 
+			logger.Println(line)
+
+			// look for a method in the line
+			if method, ok := line["method"]; ok {	
+	
+				// Must be a sink!
+				if method == "sink" {
+					logger.Println("Request for sink", line)
+					if params, ok := line["params"]; ok {
+						sinkFunc(plugin, params)
+					}
+				}
+			}
+			break
+		}
+		if err := scanner.Err(); err != nil {
+			logger.Fatal(err)
+		}
+		os.Exit(0)
+	}
+
+
+	// Otherwise, it's config, and read into json decoded
 	decoder := json.NewDecoder(os.Stdin)
-
-	line := make(map[string]interface{})
 
 	for {
 		err := decoder.Decode(&line) 
@@ -84,15 +127,6 @@ func (plugin *SinkPlugin) Run(sinkFunc func(plugin *SinkPlugin, stringValue inte
 			        plugin.printConfigResponse()
 				break
 
-			} else if method == "sink" {
-				logger.Println("Request for sink", line)
-				if params, ok := line["params"]; ok {
-					namedParams := plugin.Func.GetNamedParams(params)
-					logger.Println("Named Params:", namedParams)
-					sinkFunc(plugin, params)
-				}
-			} else {
-				break
 			}
 		}
 		break
