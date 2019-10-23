@@ -18,11 +18,15 @@ import (
 // https://github.com/nushell/nushell/blob/master/src/parser/hir/syntax_shape.rs#L45
 type SyntaxShape string
 const (
+	PresentString SyntaxShape = "Present"
 	ShapeString SyntaxShape = "String"
 	ShapeInt SyntaxShape = "Int"
 	ShapePath SyntaxShape = "Path"
 	ShapeNumber SyntaxShape = "Number"
+	EmptyString SyntaxShape = ""
 )
+
+var NullString []string
 
 // ArgType are limited to optional, Switch (boolean) or Mandatory (required)
 type ArgType string
@@ -33,7 +37,7 @@ const (
 )
 
 // NamedParam is used as an entry in NamedParams
-type NamedParam map[ArgType]SyntaxShape
+type NamedParam map[ArgType]interface{}
 
 // NamedParams are general string[string] map for the config
 type NamedParams map[string]NamedParam
@@ -62,7 +66,12 @@ type ConfigResponseParams map[string]Config
 // AddNamedParam will take a key, argument type and shape and add to config.Named
 func (config Config) AddNamedParam(key string, argType ArgType, syntaxShape SyntaxShape) {
 	newParam := NamedParam{}
-	newParam[argType] = syntaxShape
+	if syntaxShape == EmptyString {
+		var emptyArg interface{}
+		newParam[argType] = emptyArg
+	} else {
+		newParam[argType] = syntaxShape
+	}
 	config.Named[key] = newParam
 }
 

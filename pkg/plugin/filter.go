@@ -107,7 +107,8 @@ func (plugin *FilterPlugin) Run(filterFunc func(plugin *FilterPlugin, stringValu
 	for {
 		err := decoder.Decode(&line) 
 		if err != nil {
-			fmt.Errorf("unable to read json: %s", err)
+			logger.Println("unable to read json:", err)
+			break
 		} 
 
 		// look for a method in the line

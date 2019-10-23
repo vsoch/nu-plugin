@@ -6,10 +6,9 @@
 package plugin
 
 import (
-	"fmt"
+	"encoding/json"
 	"log"
 	"os"
-	"encoding/json"
 	path "path/filepath"
 
 	configlib "github.com/vsoch/nu-plugin/pkg/config"
@@ -23,7 +22,7 @@ type SinkPlugin struct {
 }
 
 // configure the sink plugin
-// TODO need to add Named and Positional to plugin
+// TODO need to add Positional to plugin
 func (plugin *SinkPlugin) configure(name string, usage string) {
 	var config = configlib.Config{
 		Name: name,
@@ -72,7 +71,8 @@ func (plugin *SinkPlugin) Run(sinkFunc func(plugin *SinkPlugin, stringValue inte
 	for {
 		err := decoder.Decode(&line) 
 		if err != nil {
-			fmt.Errorf("unable to read json: %s", err)
+			logger.Println("unable to read json:", err)
+			break
 		} 
 
 		// look for a method in the line
@@ -87,13 +87,14 @@ func (plugin *SinkPlugin) Run(sinkFunc func(plugin *SinkPlugin, stringValue inte
 			} else if method == "sink" {
 				logger.Println("Request for sink", line)
 				if params, ok := line["params"]; ok {
+					namedParams := plugin.Func.GetNamedParams(params)
+					logger.Println("Named Params:", namedParams)
 					sinkFunc(plugin, params)
 				}
+			} else {
 				break
 			}
-
-		} else {
-			break
 		}
+		break
 	}
 }
