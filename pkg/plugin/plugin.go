@@ -15,9 +15,9 @@ func NewFilterPlugin(name string, usage string) *FilterPlugin {
 }
 
 // newSinkPlugin returns a sink plugin
-//func newSinkPlugin(name string, usage string) *SinkPlugin {
-//	var functions = &PluginFunctions{}
-//	var plugin = &SinkPlugin{Func: functions}
-//	plugin.configure(name, usage)
-//	return plugin
-//}
+func NewSinkPlugin(name string, usage string) *SinkPlugin {
+	var functions = PluginFunctions{}
+	var plugin = &SinkPlugin{Func: functions}
+	plugin.configure(name, usage)
+	return plugin
+}

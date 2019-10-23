@@ -37,6 +37,52 @@ func (caller *PluginFunctions) GetIntPrimitive(stringValue interface{}) int {
 	return value
 }
 
+// GetNamedParams, or a map of names to values provided from the params
+// key. We pass as a stringvalue interface that is expected to look like
+// 	[{'args': {'positional': None,
+//	   'named': {'switch': {'tag': {'anchor': None,
+//	      'span': {'start': 58, 'end': 64}},
+//	     'item': {'Primitive': {'Boolean': True}}},
+//	    'mandatory': {'tag': {'anchor': None, 'span': {'start': 20, 'end': 32}},
+//	     'item': {'Primitive': {'String': 'MANDATORYARG'}}},
+//	    'optional': {'tag': {'anchor': None, 'span': {'start': 44, 'end': 55}},
+//	     'item': {'Primitive': {'String': 'OPTIONALARG'}}}}},
+//	  'name_tag': {'anchor': None, 'span': {'start': 0, 'end': 7}}},
+//	 []]
+func (caller *PluginFunctions) GetNamedParams(stringValue interface{}) map[string]string {
+
+	response := make(map[string]string)
+	fmt.Println(stringValue)
+	return response
+}
+//    # Just grab the args dictionary
+//    input_params = input_params[0]
+//    positional = input_params['args'].get('positional', [])
+//    named = input_params['args'].get('named', {})
+
+//    # We will return lookup dictionary of params
+//    params = {}
+
+//    # Keep a simple dictionary with values we know types for
+//    for name, values in named.items():
+
+//        # is it a String? Boolean?
+//        value_type = list(values['item']['Primitive'].keys())[0]
+
+//        if value_type == "String":
+//            params[name] = values['item']['Primitive']['String']
+
+//        elif value_type == "Boolean":
+//            params[name] = values['item']['Primitive']['Boolean']
+
+//        # If you use other types, add them here
+
+//        else:
+//            logging.info("Invalid paramater type %s:%s" %(name, values))
+
+//    return params        
+
+
 // printIntResponse will print a json response to the terminal. The 
 // generates a JsonResponse with Params.FinalResponseParams
 func (caller *PluginFunctions) PrintIntResponse(value int, tag Tag) error {

@@ -28,7 +28,7 @@ func (plugin *FilterPlugin) configure(name string, usage string) {
 	var config = configlib.Config{
 		Name: name,
 		Usage: usage,
-		Named: configlib.ConfigParams{},
+		Named: configlib.NamedParams{},
 		Positional: make([]string, 0),
 		IsFilter: true}
 	plugin.Config = config
