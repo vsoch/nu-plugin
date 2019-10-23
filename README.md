@@ -1,7 +1,9 @@
 # Nushell Plugin in GoLang
 
 This is a base library for generating a nushell plugin in Golang.
-This is currently under development
+As nushell is under development, it's likely that not all features are implemented
+here! Please [open an issue](https://www.github.com/vsoch/nu-plugin/issues)
+if you need help.
 
 ## Filter Plugin
 
@@ -48,4 +50,8 @@ For more details, see the [full example](examples/len).
 
 ## Sink Plugin
 
-I am developing this now!
+We have two examples for Sink plugins:
+
+ - [examples/salad](examples/salad) prints colored salad puns to the screen
+ - [examples/hello](examples/hello) is a more basic example to say hello
+
