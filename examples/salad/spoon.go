@@ -18,7 +18,7 @@ func selectSpoonPun() string {
 	puns := []string{" See you spoon!",
 		" They say I'm rather spoontaneous!",
 		" Did you hear about... oh, too spoon?",
-		" They call me the cereal kiler.",
+		" They call me the cereal killer.",
 		" Wanna spoon?",
 		" My favorite actress? Reese Witherspoon!",
 		" *singing* The dark side of... the spooooon!",
